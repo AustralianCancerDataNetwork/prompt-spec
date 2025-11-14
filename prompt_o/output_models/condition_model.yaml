@@ -1,0 +1,115 @@
+id: ohdsi:condition
+name: condition
+title: condition with modifiers 
+description: >-
+  A template for extracting conditions mentioned in a clinical note that can be grounded in ohdsi-compliant vocabs
+license: https://creativecommons.org/publicdomain/zero/1.0/
+prefixes:
+  linkml: https://w3id.org/linkml/
+  omop: https://athena.ohdsi.org/search-terms/terms#
+  owl: "http://www.w3.org/2002/07/owl#"
+  rdf: "http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+  rdfs: "http://www.w3.org/2000/01/rdf-schema#"
+imports:
+  - linkml:types
+#  - core - this is from ontoGPT core definition - consider best integration path for named entities going forward
+  - omop_convention
+classes:
+  Conditions:
+    tree_root: true
+    attributes:
+      conditions:
+        multivalued: true
+        inlined_as_list: true
+        range: Condition
+  Condition:
+    attributes:
+      label:
+        description: >-
+          The concise name of the condition, problem, or diagnosis as specified in the text.
+        range: ConditionProblemDiagnosis
+      verbatim_name:
+        description: >-
+          The name of the condition, problem, or diagnosis, exactly as specified in the input text. 
+          This verbatim text may include abbreviations, less formal terminology, and/or modifiers, 
+          such as "remission", "family history of", "acute" or "chronic", in the name.
+        range: string
+      codable_name:
+        description: >-
+          The specific, name of the condition, problem, or diagnosis. Do not use abbreviations.
+          Do not try to select the code yourself, but rather the label or name that is most likely 
+          to be used in a controlled vocabulary. Also do not include any modifiers, such as "remission", 
+          "family history of", "acute" or "chronic", in the name.
+        range: ConditionProblemDiagnosis
+      who_diagnosed:
+        description: >-
+          Was the condition experienced by a family member of the subject? If the condition is mentioned 
+          as being experienced by any family member or general family history then this should be "family".
+          If the condition is experienced by the subject themselves then this should be "subject". 
+        range: WhoDiagnosed # this should be in the 'status' slot, but the way that a family history may also have a status (e.g. mother has a current diagnosis of...), it is more stable to have it as a separate slot
+        ifabsent: string("unknown")
+        required: false
+      status:
+        description: >-
+          The clinical status of the condition. Is this condition currently active, suspected, at risk, 
+          recurrent or historical? If a historical condition is mentioned with neither explicit resolution 
+          nor continuing status, this should be "unknown". 
+        range: ConditionClinicalStatus
+        required: false
+      severity:
+        description: Explicit severity of condition if mentioned in the text. 
+        range: ConditionDiagnosisSeverity
+      is_negated:
+        description: >-
+          Is this condition negated or ruled out? If the condition is explicitly negated e.g. "does not have",
+          "no (family) history of", "denies", "ruled out", "no prior", "no known (family) history" this should be "negated". 
+        range: boolean
+        required: false
+
+  ConditionProblemDiagnosis:
+    is_a: OMOPHierarchy
+    id_prefixes: 
+      - omop
+    annotations:
+      annotators: 'OMOP_OWL/ohdsi_test.db'
+      parent_id: omop:441840 # Clinical finding
+
+  ConditionDiagnosisSeverity:
+    is_a: OMOPEnum
+    attributes:
+      concept_name:
+        range: ConditionDiagnosisSeverityEnum
+    annotations: 
+      meaning: concept_id
+
+
+enums:
+  WhoDiagnosed:
+    permissible_values:
+      family:
+        description: The condition was experienced by a family member of the subject.
+      subject:
+        description: The mentioned condition was specific to the subject themselves.
+      unknown:
+        description: The condition may or may not be relevant to the patient specifically but it is unclear or unknown.
+  ConditionDiagnosisSeverityEnum:
+    permissible_values:
+      severe:
+        meaning: omop:4087703
+      moderate:
+        meaning: omop:4285732
+      mild:
+        meaning: omop:4116992
+      unknown:
+        description: severity of the condition is unclear or not mentioned.
+  ConditionClinicalStatus:
+    permissible_values:
+      active:
+        description: The subject is currently experiencing the condition or situation, there is evidence of the condition or situation, or this is a chronic condition.
+      inactive:
+        description: The subject is not presently experiencing the condition or situation (resolved, remission).
+      suspected:
+        description: The subject's presentation is indicative of this condition, but it has not yet been confirmed or ruled out.
+      unknown:
+        description: The authoring/source system does not know which of the status values currently applies for this condition.
+  

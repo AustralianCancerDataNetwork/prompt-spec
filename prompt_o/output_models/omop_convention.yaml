@@ -1,0 +1,82 @@
+id: omop:convention
+name: convention
+title: OMOP convention template
+description: >-
+  A template for extracting radiotherapy regions from semi-structured data that can be grounded in ohdsi-compliant vocabs
+license: https://creativecommons.org/publicdomain/zero/1.0/
+prefixes:
+  linkml: https://w3id.org/linkml/
+  omop: https://athena.ohdsi.org/search-terms/terms#
+  owl: "http://www.w3.org/2002/07/owl#"
+  rdf: "http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+  rdfs: "http://www.w3.org/2000/01/rdf-schema#"
+default_prefix: convention
+default_range: string
+imports:
+  - linkml:types
+
+
+classes:
+  Any:
+    class_uri: linkml:Any
+
+  OMOPEnum:
+    abstract: true
+    attributes:
+      concept_name:
+        description: >-
+          The label (name) of the named thing
+        range: string
+      concept_id:
+        description: >-
+          concept_id for the enum label
+        comments:
+          - this is populated during the grounding and normalization step
+        annotations:
+          prompt.skip: "true"
+
+  OMOPHierarchy:
+    abstract: true
+    attributes:
+      id:
+        description: >-
+          A unique identifier for the named entity
+        comments:
+          - this is populated during the grounding and normalization step
+        identifier: true
+        annotations:
+          prompt.skip: "true"
+      parent_id:
+        description: >-
+          parent concept(s) under which the grounded concept should be found - supply them in order of preference - first standard concept found will be used,
+          because this is an annotation, rather than a slot, multivalued does not produce a list type, so we include it as a comma separated string instead.
+          i.e. it should be populated as 
+        comments:
+          - this needs to be specified in the range class
+        annotations:
+          prompt.skip: "true"
+      label:
+        aliases:
+          - name
+        description: >-
+          The label (name) of the named thing
+        range: string
+        slot_uri: rdfs:label
+        annotations:
+          owl: AnnotationProperty, AnnotationAssertion
+      original_spans:
+        description: >-
+          The coordinates of the original text span from which the named entity
+          was extracted, inclusive. For example, "10:25" means the span starting
+          from the 10th character and ending with the 25th character. The first
+          character in the text has index 0. Newlines are treated as single
+          characters. Multivalued as there may be multiple spans for a single
+          text.
+        comments:
+          - This is determined during grounding and normalization
+          - But is based on the full input text
+        range: string
+        multivalued: true
+        pattern: "^\\d+:\\d+$"
+        annotations:
+          prompt.skip: "true"

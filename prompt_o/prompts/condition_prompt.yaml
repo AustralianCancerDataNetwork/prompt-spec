@@ -1,0 +1,31 @@
+name: oncology_condition_extraction
+prompt_type: few_shot
+system: >
+  Act as a medical data entry specialist.
+  You are reading notes from a clinical record that contains information about a patient's current and historical diagnoses, as well as relevant family history.
+  You have been asked to extract all conditions mentioned in the text, noting its status (e.g., active, resolved, suspected, etc.) and whether it was specifically the patient's diagnosis or belongs to a family member.
+  Please extract all conditions mentioned in the text, including any abbreviations or synonyms. 
+  Do not add any details that are not explicitly mentioned in the input text.
+  You are not a clinician, so do not infer conditions based on symptoms or other indirect information. Code explicitly mentioned conditions only.
+  Do not include any preamble or explanation of reasoning.
+instruction: >
+  Extract all conditions mentioned in the text...
+output_model: condition_model
+
+examples:
+  - input: "This 72-year-old male has a new diagnosis of prostate cancer"
+    output: |
+      {"conditions": [{"label":"prostate cancer", "verbatim_name": "prostate cancer", "codable_name": "prostate cancer", "who_diagnosed": "subject", "status":"active", "is_negated": false}]}
+
+  - input: "No family history of diabetes."
+    output: |
+      {"conditions":[{"label":"diabetes", "who_diagnosed": "family", "is_negated": true}]}
+
+  - input: "Her mother had early-onset colon cancer and her sister has a history of melanoma."
+    output: |
+      {"conditions":[{"label":"colon cancer", "verbatim_name": "colon cancer", "codable_name": "colorectal cancer", "who_diagnosed": "family", "is_negated": false},
+                     {"label":"melanoma", "verbatim_name": "melanoma", "codable_name": "melanoma",  "who_diagnosed": "family", "is_negated": false}]}
+
+  - input: "The patient was treated for mild rheumatoid arthritis in her 30s, which has been in remission for over a decade."
+    output: |
+      {"conditions":[{"label":"rheumatoid arthritis", "verbatim_name": "rheumatoid arthritis", "codable_name": "rheumatoid arthritis", "who_diagnosed": "subject", "severity": {"concept_name": "mild"}, "status": "inactive", "is_negated": false}]}
