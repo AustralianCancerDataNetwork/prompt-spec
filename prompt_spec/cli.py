@@ -1,4 +1,3 @@
-
 import typer, subprocess, yaml
 from pathlib import Path
 from linkml_runtime import SchemaView
