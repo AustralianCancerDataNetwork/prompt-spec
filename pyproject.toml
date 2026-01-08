@@ -3,7 +3,7 @@ name = "prompt-o"
 version = "0.1.0"
 description = "Lightweight pydantic wrapper prompting library to support sharing of oncology-related LLM prompts"
 readme = "README.md"
-requires-python = ">=3.12"
+requires-python = ">=3.11"
 dependencies = [
     "linkml>=1.9.5",
     "linkml-runtime>=1.9.5",

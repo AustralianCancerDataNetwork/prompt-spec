@@ -19,6 +19,9 @@ prompt-o/
 ├── cli.py                        ← Main command line interface
 ├── core/
 │   └── prompt_template.py        ← Prompt class utilities
+├── engines/
+│   ├── __init__.py
+│   └── instructor_engine.py      ← Wrapper function for integrating prompts with ontoGPT via Instructor interface
 ├── output_models/
 │   └── condition_model.yaml      ← LinkML schema for defining model outputs - create new endpoint definitions here
 ├── generated_models/
@@ -27,13 +30,11 @@ prompt-o/
     └── condition_prompt.yaml     ← This is where the actual prompt definitions exist
 ```
 
-
 ---
 
 # Installation
 
 `uv pip install -e .`
-
 
 ---
 
