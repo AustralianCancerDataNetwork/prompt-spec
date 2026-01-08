@@ -134,7 +134,7 @@ def load_pydantic_class(model_name: str):
     if not module_path.exists():
         raise FileNotFoundError(
             f"Pydantic model file not found: {module_path}. "
-            f"Run `prompt-o generate-pydantic-from-linkml for {model_name}` first."
+            f"Run `prompt-spec generate-pydantic-from-linkml for {model_name}` first."
         )
 
     spec = importlib.util.spec_from_file_location(model_name, module_path)

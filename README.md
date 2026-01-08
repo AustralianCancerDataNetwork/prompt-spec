@@ -1,7 +1,7 @@
-# `prompt-o`
+# `prompt-spec`
 *A lightweight, LinkML-aligned prompt and schema management toolkit for clinical NLP & LLM workflows.*
 
-`prompt-o` provides:
+`prompt-spec` provides:
 
 - **Structured prompt templates**  
 - **LinkML → Pydantic** auto-generation for LLM output schemas  
@@ -15,7 +15,7 @@ This toolkit is intentionally minimal and designed for stability, reuse, and str
 # Project Structure
 
 ```text
-prompt-o/
+prompt-spec/
 ├── cli.py                        ← Main command line interface
 ├── core/
 │   └── prompt_template.py        ← Prompt class utilities
@@ -42,7 +42,7 @@ prompt-o/
 
 ## 1. Defining LinkML output models
 
-Place all LinkML schemas inside `prompt-o/output_models`
+Place all LinkML schemas inside `prompt-spec/output_models`
 
 Example: *condition_model.yaml*
 
@@ -71,19 +71,19 @@ classes:
 
 ## 2. Generate Pydantic models from LinkML
 
-`prompt-o build-models`
+`prompt-spec build-models`
 
-This reads all `*.yaml` schemas in `prompt-o/output_models/` and generates Pydantic classes into `prompt-o/generated_models/`.
+This reads all `*.yaml` schemas in `prompt-spec/output_models/` and generates Pydantic classes into `prompt-spec/generated_models/`.
 
 After running this, you will have files such as:
 
-* `prompt-o/generated_models/ConditionList.py`
+* `prompt-spec/generated_models/ConditionList.py`
 
-Alternatively, run for just one class update at a time: `prompt-o generate-pydantic-from-linkml output_models/condition_model.yaml`
+Alternatively, run for just one class update at a time: `prompt-spec generate-pydantic-from-linkml output_models/condition_model.yaml`
 
 ## 3. Populate prompt template
 
-`prompt-o create-empty-prompt condition_model prompts/condition_prompt.yaml`
+`prompt-spec create-empty-prompt condition_model prompts/condition_prompt.yaml`
 
 This produces:
 
@@ -99,5 +99,5 @@ examples:
 
 ## 4. Validate a prompt against its template
 
-`prompt-o validate-prompt condition_prompt.yaml`
+`prompt-spec validate-prompt condition_prompt.yaml`
 

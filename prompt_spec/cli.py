@@ -6,7 +6,7 @@ from pydantic import ValidationError
 
 from .core.utils import load_pydantic_class, OUTPUT_MODELS_DIR, PROMPTS_DIR, GENERATED_MODELS_DIR, get_template_for_model, dump_example_output, load_output_field
 
-app = typer.Typer(help="prompt-o command line tools")
+app = typer.Typer(help="prompt-spec command line tools")
 
 @app.command("generate-pydantic-from-linkml")
 def generate_pydantic_from_linkml(schema_path: Path):

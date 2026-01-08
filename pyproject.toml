@@ -1,5 +1,5 @@
 [project]
-name = "prompt-o"
+name = "prompt-spec"
 version = "0.1.0"
 description = "Lightweight pydantic wrapper prompting library to support sharing of oncology-related LLM prompts"
 readme = "README.md"
@@ -15,4 +15,4 @@ dependencies = [
 ]
 
 [project.scripts]
-prompt-o = "prompt_o.cli:main"
+prompt-spec = "prompt_spec.cli:main"
