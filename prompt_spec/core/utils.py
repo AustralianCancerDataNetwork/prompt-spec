@@ -104,7 +104,7 @@ def build_json_example(sv: SchemaView, class_name: str) -> dict:
 
     return output
 
-def load_pydantic_class(model_name: str):
+def load_pydantic_class(model_name: str, schema: str | Path | None = None):
     """
     Load a generated Pydantic class corresponding to the LinkML tree root.
 
@@ -114,8 +114,13 @@ def load_pydantic_class(model_name: str):
     3. Load that class from the generated Pydantic module.
     4. Fall back to filename→CamelCase if needed.
     """
+    schema_path: Path
 
-    schema_path = OUTPUT_MODELS_DIR / f"{model_name}.yaml"
+    if schema is None:
+        schema_path = OUTPUT_MODELS_DIR / f"{model_name}.yaml"
+    else:
+        schema_path = Path(schema)
+    
     if not schema_path.exists():
         raise FileNotFoundError(
             f"Schema not found: {schema_path}. Expected LinkML schema for '{model_name}'."
