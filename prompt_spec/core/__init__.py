@@ -1,5 +1,6 @@
 from .prompt_template import PromptTemplate, PromptExample, PromptType
 from .populate_prompt import draft_prompt_with_openai
+from .populate_prompt import load_pydantic_class
 from .utils import (
     load_pydantic_class, 
     load_output_field, 
@@ -24,5 +25,6 @@ __all__ = [
     "BASE_DIR",
     "OUTPUT_MODELS_DIR",
     "GENERATED_MODELS_DIR",
-    "PROMPTS_DIR"
+    "PROMPTS_DIR",
+    "load_pydantic_class",
 ]

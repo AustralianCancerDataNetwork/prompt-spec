@@ -1,6 +1,6 @@
 [project]
 name = "prompt-spec"
-version = "0.1.2"
+version = "0.1.3"
 description = "Lightweight pydantic wrapper prompting library to support sharing of oncology-related LLM prompts"
 readme = "README.md"
 requires-python = ">=3.11"

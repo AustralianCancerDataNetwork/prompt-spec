@@ -6,3 +6,6 @@
 
 ## 0.1.2
 - load_pydantic_class takes path as an optional argument
+
+## 0.1.3
+- load_prompt_template  

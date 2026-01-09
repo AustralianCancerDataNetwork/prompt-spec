@@ -14,6 +14,8 @@ class PromptType(str, Enum):
     classification = "classification"
 
 class PromptTemplate(BaseModel):
+    name: str
+    prompt_type: PromptType
     system: Optional[str] = None
     instruction: str
     output_model: Type[BaseModel]
@@ -28,7 +30,7 @@ class PromptTemplate(BaseModel):
 
         # assemble full prompt
         return (
-            (self.system + "\n\n") if self.system else "" +
+            ((self.system + "\n\n") if self.system else "") +
             self.instruction.strip() +
             ("\n\nExamples:\n" + examples_block if examples_block else "") +
             "\n\nUser Input:\n" + user_input

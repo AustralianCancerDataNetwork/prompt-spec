@@ -104,7 +104,7 @@ def build_json_example(sv: SchemaView, class_name: str) -> dict:
 
     return output
 
-def load_pydantic_class(model_name: str, schema: str | Path | None = None):
+def load_pydantic_class(model_name: str, linkml_schema: str | Path | None = None, module_path: Path | None = None):
     """
     Load a generated Pydantic class corresponding to the LinkML tree root.
 
@@ -116,10 +116,10 @@ def load_pydantic_class(model_name: str, schema: str | Path | None = None):
     """
     schema_path: Path
 
-    if schema is None:
+    if linkml_schema is None:
         schema_path = OUTPUT_MODELS_DIR / f"{model_name}.yaml"
     else:
-        schema_path = Path(schema)
+        schema_path = Path(linkml_schema)
     
     if not schema_path.exists():
         raise FileNotFoundError(
@@ -134,8 +134,8 @@ def load_pydantic_class(model_name: str, schema: str | Path | None = None):
             f"Could not infer a root class for schema: {schema_path}. "
             "Ensure that at least one class has `tree_root: true` or is inferable."
         )
-
-    module_path = GENERATED_MODELS_DIR / f"{model_name}.py"
+    if not module_path:
+        module_path = GENERATED_MODELS_DIR / f"{model_name}.py"
     if not module_path.exists():
         raise FileNotFoundError(
             f"Pydantic model file not found: {module_path}. "
@@ -161,3 +161,5 @@ def load_pydantic_class(model_name: str, schema: str | Path | None = None):
         f"in generated module {module_path}.\n"
         f"Available classes: {available}"
     )
+
+
