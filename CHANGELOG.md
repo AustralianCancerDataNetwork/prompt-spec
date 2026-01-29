@@ -12,3 +12,6 @@
 
 ## 0.1.3
 - bugfixes
+
+## 0.1.4
+- new (alpha) draft template for genomic variants of interest

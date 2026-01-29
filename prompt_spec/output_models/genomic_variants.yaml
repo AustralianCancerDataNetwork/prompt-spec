@@ -1,0 +1,83 @@
+id: ohdsi:genomic_variants
+name: genomic_variants
+title: genomic variants of interest for lung cancer
+description: >-
+  A model representing genomic variants relevant to lung cancer, including gene names, mutation types, 
+  and clinical significance.
+version: 1.0.0
+license: https://creativecommons.org/publicdomain/zero/1.0/
+prefixes:
+  linkml: https://w3id.org/linkml/
+  omop: https://athena.ohdsi.org/search-terms/terms#
+  owl: "http://www.w3.org/2002/07/owl#"
+  rdf: "http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+  rdfs: "http://www.w3.org/2000/01/rdf-schema#"
+imports:
+  - linkml:types
+  - omop_convention
+classes:
+  GenomicVariants:
+    tree_root: true
+    attributes:
+      variants:
+        multivalued: true
+        inlined_as_list: true
+        range: GenomicVariant
+  GenomicVariant:
+    attributes:
+      gene_name:
+        description: >-
+          The name of the gene where the variant is located.
+        range: string
+      mutation_type:
+        description: >-
+          The type of mutation (e.g., substitution, deletion, insertion).
+        range: string
+        required: false
+      nucleotide_change:
+        description: >-
+          The specific nucleotide change (e.g., c.34G>T).
+        range: string
+        required: false
+      protein_change:
+        description: >-
+          The resulting protein change (e.g., p.Gly12Cys).
+        range: string
+        required: false
+      clinical_significance:
+        description: >-
+          The clinical significance of the variant (e.g., pathogenic, benign, uncertain significance).
+        range: string 
+        required: false
+      resulttype:
+        description: >-
+          The type of result reported (e.g., positive, negative, inconclusive, pending).
+        range: ResultType
+      detected_variant:
+        description: >-
+          Indicates whether the variant was detected in the analysis (e.g., true, false).
+        range: boolean
+        required: false
+      variant_frequency:
+        description: >-
+          The frequency of the variant in the population or sample (e.g., 0.05 for 5%).
+        range: float  
+        required: false
+      zygosity:
+        description: >-
+          The zygosity of the variant (e.g., homozygous, heterozygous).
+        range: string 
+        required: false
+enums:
+  ResultType:
+    permissible_values:
+      positive:
+        description: The variant was detected.
+      negative:
+        description: The variant was not detected.
+      inconclusive:
+        description: The results were inconclusive.
+      pending:
+        description: The results are pending.
+      unknown:
+        description: The result type is unknown.

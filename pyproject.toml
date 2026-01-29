@@ -16,3 +16,7 @@ dependencies = [
 
 [project.scripts]
 prompt-spec = "prompt_spec.cli:main"
+
+[tool.setuptools.packages.find]
+include = ["prompt_spec*"]
+exclude = ["notebooks*"]
